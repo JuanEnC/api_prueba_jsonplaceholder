@@ -6,6 +6,7 @@ export function comments(postId) {
     .then((comentarios) => {
       let muro = document.getElementById("comments" + postId);
       let texto = "";
+      texto += `<button onclick="ocultarComentarios(${postId})">Ocultar comentario</button>`;
       comentarios.forEach((comentario) => {
         texto += `
         <div class="card">
@@ -54,8 +55,14 @@ export function addComment(postId){
 
 }
 
+export function ocultarComentarios(postId) {
+  let div = document.getElementById("comments" + postId);
+  div.innerHTML = "";
+}
+
 window.comments = comments;
 window.addComment = addComment;
+window.ocultarComentarios = ocultarComentarios;
 
 const btnCargar = document.getElementById("btnCargar");
 btnCargar.addEventListener("click", () => {
