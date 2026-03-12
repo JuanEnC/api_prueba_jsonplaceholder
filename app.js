@@ -16,12 +16,46 @@ export function comments(postId) {
         </div><br>
           `;
       });
+      texto += `
+      <div>
+          <form action="POST">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <label for="body">Comentario:</label>
+            <input type="text" id="body" name="body" style="width: 100%;  padding: 10px;">
+          </form>
+          <button onclick="addComment(${postId})">Comentar</button>
+        </div>
+      `;
       muro.innerHTML = texto;
     });
 }
 
+export function addComment(postId){
+  let nombre = document.getElementById("name").value;
+  let correo = document.getElementById("email").value;
+  let comentario = document.getElementById("body").value;
+  fetch(`https://jsonplaceholder.typicode.com/comments?postId= ${postId}`, {
+  method: 'POST',
+  body: JSON.stringify({
+    postId : postId,
+    name : nombre,
+    email : correo,
+    body : comentario
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+}
 
 window.comments = comments;
+window.addComment = addComment;
 
 const btnCargar = document.getElementById("btnCargar");
 btnCargar.addEventListener("click", () => {
@@ -61,6 +95,6 @@ selectPost.addEventListener("change", () => {
           `;
       });
       muro.innerHTML = texto;
-      document.getElementById("comments").innerHTML = "";
+      //document.getElementById("comments").innerHTML = "";
     });
 });
